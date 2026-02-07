@@ -1,35 +1,22 @@
 package com.reljicd.model;
 
-import org.hibernate.validator.constraints.Length;
-
 import javax.persistence.*;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Min;
-import java.math.BigDecimal;
+import java.util.Collection;
 
 @Entity
-@Table(name = "product")
-public class Product {
+@Table(name = "role")
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "product_id")
+    @Column(name = "role_id")
     private Long id;
 
-    @Column(name = "name", nullable = false, unique = true)
-    @Length(min = 3, message = "*Name must have at least 5 characters")
-    private String name;
+    @Column(name = "role", unique = true)
+    private String role;
 
-    @Column(name = "description")
-    private String description;
-
-    @Column(name = "quantity", nullable = false)
-    @Min(value = 0, message = "*Quantity has to be non negative number")
-    private Integer quantity;
-
-    @Column(name = "price", nullable = false)
-    @DecimalMin(value = "0.00", message = "*Price has to be non negative number")
-    private BigDecimal price;
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "roles")
+    private Collection<User> users;
 
     public Long getId() {
         return id;
@@ -39,50 +26,19 @@ public class Product {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getRole() {
+        return role;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRole(String role) {
+        this.role = role;
     }
 
-    public String getDescription() {
-        return description;
+    public Collection<User> getUsers() {
+        return users;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal unitPrice) {
-        this.price = unitPrice;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Product product = (Product) o;
-
-        return id.equals(product.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return id.hashCode();
+    public void setUsers(Collection<User> users) {
+        this.users = users;
     }
 }
